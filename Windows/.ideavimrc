@@ -11,6 +11,9 @@ set surround
 
 set syntax on
 
+"啟用 NERDTree"
+set NERDTree
+
 "搜尋結果顯示高亮"
 set hlsearch
 
@@ -31,9 +34,14 @@ let g:highlightedyank_highlight_duration = 3000
 
 map zso :source C:\users\07460.yuwei.chang\.ideavimrc<CR>
 
+"使用 NERDTree"
+nmap ff :NERDTree <CR>
+
 " Copy 上一個 unit test 的所有內容"
 imap <F1> <Esc>may?[T<CR>`ap?public<CR>$Bzz
 nmap <F1> may?[T<CR>`ap?void<CR>$Bzz
+
+
 
 " Run unit test for solution"
 nmap zra zz:action RiderUnitTestRunSolutionAction<CR>
@@ -81,6 +89,9 @@ vmap M :action ExtractMethod<CR>
 " Refactoring change signature"
 map zrs :action ChangeSignature<CR><Esc>
 
+" Refactoring Safe Delete"
+map zrd :action SafeDelete<CR><Esc>
+
 " Refactoring inline"
 map zri :action Inline<CR><Esc>
 
@@ -120,7 +131,7 @@ imap zec <Esc>:action SilentCodeCleanup<CR>zz
 " Press `space` to activate AceJump
 map <Space> :action AceAction<CR>
 " Press `F` to activate Target Mode
-map F :action AceTargetAction<CR>
+"map F :action AceTargetAction<CR>
 " Press `g` to activate Line Mode
 "map g :action AceLineAction<CR>
 
@@ -154,8 +165,21 @@ nmap zb ciw
 " 剪下一整行
 imap <C-x> <Esc>dd
 
-" 全選所有內容
+" 全選所有內容 Ctrl + a"
 imap <C-a> <Esc>ma<CR>ggVG
+nmap <C-a> <Esc>ma<CR>ggVG
+map <leader>sa ggVG"
+
+"縮排及按鍵對應"
+vnoremap < <gv      
+vnoremap > >gv
+
+"Vim搜尋結果居中展示"
+nnoremap n nzz
+nnoremap <silent> N Nzz
+nnoremap <silent> * *zz
+nnoremap <silent> # #zz
+nnoremap <silent> g* g*zz
 
 " 將遊標所在行拉到畫面上方
 nmap zt zt2k2j
@@ -215,8 +239,6 @@ nmap z] vi]
 
 " Ctrl + x"
 imap <C-x> <Esc>dd
-" Ctrl + a"
-imap <C-a> <Esc>ma<CR>ggVG
 
 " 加一個 constructor method, 在 rider 可以用 `,g` generate code"
 "nmap <A-s> "add?class<CR>w"bywjopublic void <Esc>"bpa (){}<Left><CR><Esc>"ap:action ReformatCode<CR>
@@ -236,3 +258,5 @@ nmap <C-n> :action NewElementSamePlace<CR>
 nmap <C-CR> a<CR><Esc>
 nmap <D-S-CR> f,a<CR><Esc>
 "nmap <M-S-CR> f,a<CR><Esc>
+
+nmap zss f>a<CR><Esc>
