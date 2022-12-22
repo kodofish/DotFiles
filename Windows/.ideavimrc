@@ -1,47 +1,179 @@
 " For ideavimrc vim config
 " https://github.com/JetBrains/ideavim
-set smartcase
 
-"啟用自動縮排"
-set autoindent
+""" Map leader to space ---------------------
+let mapleader="z"
 
-set smartindent
-set multiple-cursors
+""" Plugins  --------------------------------
 set surround
+set multiple-cursors
+"set commentary
+"set argtextobj
+"set easymotion
+"set textobj-entire
+"set ReplaceWithRegister
+set smartcase
+set autoindent              "啟用自動縮排"
+set smartindent
 
-set syntax on
+""" Common settings -------------------------
+set showmode
+set so=5
+set incsearch               "Do incremental searching.
+set nu
 
-"啟用 NERDTree"
-set NERDTree
-
-"搜尋結果顯示高亮"
-set hlsearch
-
-" https://github.com/JetBrains/ideavim/wiki/%60ideajoin%60-examples
-set ideajoin
-
-" https://youtrack.jetbrains.com/issue/VIM-959
-set ideamarks
-
-" https://intellij-support.jetbrains.com/hc/en-us/community/posts/360008429240-How-To-Enable-Relative-Line-Numbers-With-IdeaVim
-set relativenumber
+""" Idea specific settings ------------------
+set ideajoin                " https://github.com/JetBrains/ideavim/wiki/%60ideajoin%60-examples
+set ideastatusicon=gray
+set idearefactormode=keep
+set ideamarks               " https://youtrack.jetbrains.com/issue/VIM-959
+set relativenumber          " https://intellij-support.jetbrains.com/hc/en-us/community/posts/360008429240-How-To-Enable-Relative-Line-Numbers-With-IdeaVim
 set number 
-
+"set syntax on
+set NERDTree                "啟用 NERDTree
+set hlsearch                "搜尋結果顯示高亮
 " https://youtrack.jetbrains.com/issue/VIM-1970
 " https://github.com/machakann/vim-highlightedyank
 set highlightedyank
 let g:highlightedyank_highlight_duration = 3000
 
-map zso :source C:\users\07460.yuwei.chang\.ideavimrc<CR>
+""" Navigator Key mappings ----------------------------
+nmap ff :NERDTree <CR>      "使用 NERDTree
+" Go to the declaration
+nmap zf :action GotoDeclaration<CR>
+imap zf <Esc>:action GotoDeclaration<CR>
 
-"使用 NERDTree"
-nmap ff :NERDTree <CR>
+" parameter declaration
+nmap zF :action RdParameterDeclarationNavigationAction<CR>
+imap zF <Esc>:action RdParameterDeclarationNavigationAction<CR>
 
+" Back to prev position
+nmap zk :action Back<CR>
+imap zk <Esc>:action Back<CR>
+
+" Forward to next position
+nmap zj :action Forward<CR>
+imap zj <Esc>:action Forward<CR>
+
+" Go to next error"
+nmap zn :action GotoNextError<CR>
+nmap zsn :action ReSharperGotoPrevErrorInSolution<CR>
+
+" Move cursor to next/prev member
+map <A-j> :action MethodDown<CR>
+map <A-k> :action MethodUp<CR>
+
+" 移到行頭
+:nmap zh ^
+:imap zh <Esc>^i
+
+" 移到行尾
+:nmap zl $
+:imap zl <End>
+
+" 往上捲一頁
+:nmap zzk <C-b><Esc>
+
+" 往下捲一頁
+:nmap zzj <C-f><Esc>
+
+"取消插入模式
+:imap jj <Esc>
+
+"Vim搜尋結果居中展示"
+nnoremap n nzz
+nnoremap <silent> N Nzz
+nnoremap <silent> * *zz
+nnoremap <silent> # #zz
+nnoremap <silent> g* g*zz
+
+" 將遊標所在行拉到畫面上方
+:nmap ztt z<CR>2k2j
+
+""" Edit Key mappings ----------------------------
+" Move cursor line up/down"
+map <A-down> :action MoveLineDown<CR>:action VimAutoIndentLines<CR>
+map <A-up> :action MoveLineUp<CR>:action VimAutoIndentLines<CR>
+
+" Code clean up"
+nmap zec :action SilentCodeCleanup<CR>zz
+imap zec <Esc>:action SilentCodeCleanup<CR>zz
+
+"Reformat Code
+nmap zer :action ReformatCode<CR>
+imap zer <Esc>:action ReformatCode<CR>
+
+" Open surround with window"
+vmap S :action SurroundWithLiveTemplate<CR>
+
+"模擬 Back Space
+nmap <BS> a<BS>
+
+"將整行剪下並移到開頭
+:nmap hc ^C
+
+"剪下整行並恢復到 Normal Mode
+:imap zd <Esc>dd
+
+" 存檔並離開檔案 
+nmap zq :wq<CR>
+nmap qq :wq<CR>
+
+"剪下標籤內的內容
+:nmap zb ciw
+:vmap zb <Esc>ciw
+
+" 剪下一整行 (Ctrl + x)"
+imap <C-x> <Esc>dd
+
+" 全選所有內容 (Ctrl + a)
+imap <C-a> <Esc>ma<CR>ggVG
+nmap <C-a> <Esc>ma<CR>ggVG
+map <leader>sa ggVG"
+
+"縮排及按鍵對應"
+vnoremap < <gv
+vnoremap > >gv
+
+" 移到行尾並加上分號(;)
+nmap z; $a;<Esc>
+imap z; <Esc>$a;
+
+" 選取兩個小括號之間的內容"
+:nmap z, vi)
+:nmap z) vi)
+
+" 選取兩個大括號之間的內容"
+nmap z} vi}
+nmap z. vi}
+
+" 選取兩個 tag 之間的內容"
+nmap z> vit
+
+" 剪下兩個 tag 之間的內容"
+nmap c> cit
+
+" 選取兩個分號之間的內容"
+nmap z" vi"
+
+" 剪下兩個分號之間的內容"
+:nmap zcc ci"
+
+" 剪下兩個中括號間的內容"
+:nmap zxx ci]
+" 剪下兩個分號之間的內容，包含分號
+:nmap zaa ca"
+
+" 將所在行搬到第一個 public method 裡"
+nmap <A-x> dd?class<CR>/public<CR>/{<CR>p:action ReformatCode<CR>
+
+"在下一個 > 符號插入斷行
+nmap zss f>a<CR><Esc>
+
+""" Unit Test Key mappings ----------------------------
 " Copy 上一個 unit test 的所有內容"
 imap <F1> <Esc>may?[T<CR>`ap?public<CR>$Bzz
 nmap <F1> may?[T<CR>`ap?void<CR>$Bzz
-
-
 
 " Run unit test for solution"
 nmap zra zz:action RiderUnitTestRunSolutionAction<CR>
@@ -59,32 +191,28 @@ imap zrc <Esc>mz?class <CR>:action RiderUnitTestCoverContextAction<CR>
 nmap zrl zz:action RiderUnitTestRepeatPreviousRunAction<CR>
 imap zrl <Esc>zz:action RiderUnitTestRepeatPreviousRunAction<CR>
 
-" Jump to commit window
-nmap zgc zz:action CheckinProject<CR>
+" 將遊標所在行搬到新的 Setup 裡"
+nmap zts dd?class<CR>jo[SetUp]<CR>public<Space>void<Space>SetUp(){<CR>}<Esc>P:action SilentCodeCleanup<CR>
 
-" Go to the declaration
-nmap zf :action GotoDeclaration<CR>
-imap zf <Esc>:action GotoDeclaration<CR>
+" 將所在行搬到 Setup "
+nmap ztx dd?SetUp<CR>/{<CR>jp:action ReformatCode<CR>
+Assert.AreEqual(expected,actual);
 
-" Back to prev position
-nmap zk :action Back<CR>
-imap zk <Esc>:action Back<CR>
+" 插入 Assert.AreEqual"
+imap zte Assert.AreEqual(expected,actual);<Esc>T(
+nmap zte aAssert.AreEqual(expected,actual);<Esc>T(
 
-" Forward to next position
-nmap zj :action Forward<CR>
-imap zj <Esc>:action Forward<CR>
-
+""" Refactoring Test Key mappings ----------------------------
 nmap zsr :action Refactorings.QuickListPopupAction<CR>
 imap zsr <Esc>:action Refactorings.QuickListPopupAction<CR>
 vmap zsr :action Refactorings.QuickListPopupAction<CR>
 
 " Refactoring rename"
-nmap zrr :action RenameElement<CR>
+map zrr :action RenameElement<CR>
 
 " Refactoring extract method"
 nmap zrm :action ExtractMethod<CR>
 vmap zrm :action ExtractMethod<CR>
-vmap M :action ExtractMethod<CR>
 
 " Refactoring change signature"
 map zrs :action ChangeSignature<CR><Esc>
@@ -94,18 +222,29 @@ map zrd :action SafeDelete<CR><Esc>
 
 " Refactoring inline"
 map zri :action Inline<CR><Esc>
+imap zri <Esc>:action Inline<CR><Esc>
 
 " Refactoring introduce variable"
 map zrv :action IntroduceVariable<CR><Esc>
+vmap zrv <Esc>:action IntroduceVariable<CR>
+imap zrv <Esc>:action IntroduceVariable<CR>
 
 " Refactoring introduce field"
 map zrf :action IntroduceField<CR><Esc>
+imap zrf <Esc>:action IntroduceField<CR>
 
 " Refactoring introduce parameter"
 map zrp :action IntroduceParameter<CR><Esc>
+imap zrp <Esc>:action IntroduceParameter<CR>
+nmap zsp vi":action IntroduceParameter<CR>
 
 " Refactoring move class to another namespace or folder or another file"
-nmap zro :action Move<CR>
+map zro :action Move<CR>
+imap zro <Esc>:action Move<CR>
+
+""" Tool window key mappings ----------------------------
+" Jump to commit window
+nmap zgc zz:action CheckinProject<CR>
 
 " Show structure tool window"
 nmap zsc :action ActivateStructureToolWindow<CR>
@@ -114,18 +253,21 @@ nmap zsc :action ActivateStructureToolWindow<CR>
 nmap zpm :action PasteMultiple<CR>
 imap zpm <Esc>:action PasteMultiple<CR>
 
-" Go to next error"
-nmap zn :action GotoNextError<CR>
+"Open file structure popup window"
+nmap ,m :action FileStructurePopup<CR>
+:nmap ,m :action ReformatCode<CR>:action FileStructurePopup<CR>
 
-" nmap zec :action ReformatCode<CR>
-" imap zrc <Esc>:action ReformatCode<CR>
+"Open go to file window"
+nmap ,t :action GotoFile<CR>
 
-" Open surround with window"
-vmap S :action SurroundWithLiveTemplate<CR>
+"Open generate code window"
+nmap ,g :action Generate<CR>
 
-" Code clean up"
-nmap zec :action SilentCodeCleanup<CR>zz
-imap zec <Esc>:action SilentCodeCleanup<CR>zz
+" 建立新檔案
+nmap <C-n> :action NewElementSamePlace<CR>
+
+
+" 以下的仍未整理---------------------------
 
 " https://plugins.jetbrains.com/plugin/7086-acejump"
 " Press `space` to activate AceJump
@@ -135,128 +277,43 @@ map <Space> :action AceAction<CR>
 " Press `g` to activate Line Mode
 "map g :action AceLineAction<CR>
 
-
-nmap <BS> a<BS>
-"移到行頭"
-nmap hh ^
-"移到行尾"
-nmap ll $
-"往上捲一頁"
-nmap zzk <C-b>
-"往下捲一頁"
-nmap zzj <C-f> 
-
-imap zl <End>
-"imap jj <Esc>
-"imap zh <Esc>^i
-
-" 將整行剪下並移到開頭"
-nmap hc ^C
-
-" 恢復到 Normal Mode 並剪下整行"
-imap zd <Esc>dd
-
-" 存檔並離開檔案 
-nmap zq :wq<CR>
-nmap qq :wq<CR>
-
-nmap zb ciw
-
-" 剪下一整行
-imap <C-x> <Esc>dd
-
-" 全選所有內容 Ctrl + a"
-imap <C-a> <Esc>ma<CR>ggVG
-nmap <C-a> <Esc>ma<CR>ggVG
-map <leader>sa ggVG"
-
-"縮排及按鍵對應"
-vnoremap < <gv      
-vnoremap > >gv
-
-"Vim搜尋結果居中展示"
-nnoremap n nzz
-nnoremap <silent> N Nzz
-nnoremap <silent> * *zz
-nnoremap <silent> # #zz
-nnoremap <silent> g* g*zz
-
-" 將遊標所在行拉到畫面上方
-nmap zt zt2k2j
-
-" 移到行尾並加上分號"
-nmap z; $a;<Esc>
-imap z; <Esc>$a;
-
-"Open file structure popup window"
-nmap ,m :action FileStructurePopup<CR>
-
-"Open go to file window"
-nmap ,t :action GotoFile<CR>
-
-"Open generate code window"
-nmap ,g :action Generate<CR>
-
-" 選取兩個小括號之間的內容"
-nmap z, vi)
-nmap z) vi)
-
-" 選取兩個大括號之間的內容"
-nmap z} vi}
-nmap z. vi}
-
-" 選取兩個 tag 之間的內容"
-nmap z> vit
-
-" 剪下兩個 tag 之間的內容"
-nmap c> cit
-
-" 選取兩個分號之間的內容"
-nmap z" vi"
-
-" 剪下兩個分號之間的內容"
-nmap zcc ci"
-
-" 剪下兩個分號之間的內容(包含前後分號)"
-nmap zaa ca"
-
-" 剪下兩個中括號([])之間的內容"
-nmap zxx ci]
-
-" 選取兩個中括號之間的內容"
-nmap z] vi]
-
-"nmap ,p "0p
-"nmap ,P "0P
-"imap z,p <Esc>"0pa
-"imap z,P <Esc>"0Pa
-
-" insert single char
-":map ,i i?<Esc>r
-
-" append single char
-":map ,a a?<Esc>r
-
-" Ctrl + x"
-imap <C-x> <Esc>dd
-
-" 加一個 constructor method, 在 rider 可以用 `,g` generate code"
-"nmap <A-s> "add?class<CR>w"bywjopublic void <Esc>"bpa (){}<Left><CR><Esc>"ap:action ReformatCode<CR>
-
-" 將所在行搬到第一個 public method 裡"
-nmap <A-x> dd?class<CR>/public<CR>/{<CR>p:action ReformatCode<CR>
-
-" 將遊標所在行搬到新的 Setup 裡"
-nmap zts dd?class<CR>jo[SetUp]<CR>public<Space>void<Space>SetUp(){<CR>}<Esc>P:action ReformatCode<CR>
-
-" 將所在行搬到 Setup "
-nmap ztx dd?SetUp<CR>/{<CR>jp:action ReformatCode<CR>
-
-nmap <C-n> :action NewElementSamePlace<CR>
-
 "nmap <C-CR> mza<CR><Esc>`z
 nmap <C-CR> a<CR><Esc>
 nmap <D-S-CR> f,a<CR><Esc>
 "nmap <M-S-CR> f,a<CR><Esc>
 
-nmap zss f>a<CR><Esc>
+
+nmap ,p "0p
+nmap ,P "0P
+imap z,p <Esc>"0pa
+":vmap <Esc> <Esc><Esc><Esc>
+:nmap <BS> a<BS>
+imap <F1> <Esc>ztmay?[T<CR>`ap?void<CR>w
+nmap <F1> ztmay?[T<CR>`ap?void<CR>w
+imap <A-F1> <Esc>may?[F<CR>`ap?void<CR>wzz
+nmap <A-F1> may?[F<CR>`ap?void<CR>wzz
+
+
+vmap M :action VimVisualSwapSelections<CR>:action ExtractMethod<CR><ESC>
+"vmap M :<bs><bs><bs><bs><bs>action VimVisualSwapSelections<CR>:action ExtractMethod<CR><ESC>
+map zrt :action ReformatCode<CR>:action SearchEverywhere<CR>
+imap zrt <Esc>:action SearchEverywhere<CR>
+map <C-D> :action EditorDuplicateLines<CR>
+imap <C-D> <Esc>:action EditorDuplicateLines<CR>
+map <C-A-K> :action MoveLineUp<CR>:action VimAutoIndentLines<CR>
+imap <C-A-K> <Esc>:action MoveLineUp<CR>:action VimAutoIndentLines<CR>
+map <C-A-J> :action MoveLineDown<CR>:action VimAutoIndentLines<CR>
+imap <C-A-J> <Esc>:action MoveLineDown<CR>:action VimAutoIndentLines<CR>
+map <A-D> :action EditorDeleteLine<CR>
+imap <A-D> <Esc>:action EditorDeleteLine<CR>
+
+nmap zm :action BuildSolutionAction<CR>
+nmap <A-u> :redo<CR>
+nmap <C-w> :action SmartSelect<CR>:action VimVisualSwapSelections<CR>
+
+nmap <C-CR> mza<CR><Esc>`z
+
+
+" Don't use Ex mode, use Q for formatting.
+"map Q gq
+
