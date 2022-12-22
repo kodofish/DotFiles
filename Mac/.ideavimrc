@@ -30,7 +30,6 @@ set ideamarks               " https://youtrack.jetbrains.com/issue/VIM-959
 set relativenumber          " https://intellij-support.jetbrains.com/hc/en-us/community/posts/360008429240-How-To-Enable-Relative-Line-Numbers-With-IdeaVim
 set number 
 "set syntax on
-set NERDTree                "啟用 NERDTree
 set hlsearch                "搜尋結果顯示高亮
 " https://youtrack.jetbrains.com/issue/VIM-1970
 " https://github.com/machakann/vim-highlightedyank
@@ -38,7 +37,7 @@ set highlightedyank
 let g:highlightedyank_highlight_duration = 3000
 
 """ Navigator Key mappings ----------------------------
-nmap ff :NERDTree <CR>      "使用 NERDTree
+nmap ff :action ActivateProjectToolWindow<CR>
 " Go to the declaration
 nmap zf :action GotoDeclaration<CR>
 imap zf <Esc>:action GotoDeclaration<CR>
